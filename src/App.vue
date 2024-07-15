@@ -1,12 +1,9 @@
 <template>
   <div>
-    <h1>Hello World!</h1>
-    <p>Welcome to my Vite light weight startup.</p>
+    <ImageUploader> </ImageUploader>
   </div>
 </template>
 
-<script>
-export default {
-  name: "App",
-}
+<script setup>
+import ImageUploader from "@/components/ImageUploader.vue"
 </script>
