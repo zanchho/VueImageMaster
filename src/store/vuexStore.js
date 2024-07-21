@@ -28,7 +28,8 @@ const store = createStore({
         console.log(token, user)
         commit("SET_TOKEN", token)
         commit("SET_USER", user)
-        localStorage.setItem("authToken", token) // should go out before prod
+
+        return Promise.resolve() // return a resolved promise to handle action on logged in like closing modal
       } catch (error) {
         console.error("Vuex-action:login failed:", error)
         throw error // Propagate the error to the caller

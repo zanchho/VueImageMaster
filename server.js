@@ -81,12 +81,7 @@ function decryptCredentials(creds) {
 
   try {
     const bytes = CryptoJS.AES.decrypt(encryptedCredentials, secretKey)
-    const decryptedCredentials = JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
-
-    // Log or use the decrypted credentials
-    console.log("Decrypted Credentials:", decryptedCredentials)
-
-    return decryptedCredentials
+    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
   } catch (err) {
     console.error("Decryption Error:", err)
     return null

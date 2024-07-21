@@ -28,6 +28,7 @@ import CryptoJS from "crypto-js"
 import vuexStore from "@/store/vuexStore"
 const username = ref("")
 const password = ref("")
+const emits = defineEmits(["loginSuccess", "loginFailed"])
 
 function handleLogin() {
   const credentialsJson = JSON.stringify({
@@ -36,16 +37,30 @@ function handleLogin() {
   })
 
   // Encrypt credentials
-  //TODO regen SecretKey and use env or else
-  const secretKey =
-    "3a4ea7e8355b5e2c21b61a2bf1d20ff0ac50526ab5be26bc99a027be54d7ba0a" // use secretKey (openssl rand -hex 32)
+  const secretKey = import.meta.env.VITE_CREDENTIAL_SECRET_KEY // use secretKey (openssl rand -hex 32)
+
   const encryptedCredentials = CryptoJS.AES.encrypt(
     credentialsJson,
     secretKey
   ).toString()
-  //TODO remove log
-  console.log("Encrypted Credentials:", encryptedCredentials)
 
-  vuexStore.dispatch("login", encryptedCredentials)
+  vuexStore
+    .dispatch("login", encryptedCredentials)
+    .then(emits("loginSuccess"))
+    .catch(err => {
+      //TODO actually error Handling with Message
+      emits("loginFailed")
+      console.error(err)
+    })
 }
 </script>
+
+<style>
+.login-container {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+}
+</style>
