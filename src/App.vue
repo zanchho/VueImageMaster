@@ -2,8 +2,16 @@
   <div>
     <h1>TEST</h1>
     <button @click="openLogin">GO TO LOGIN</button>
-    <Modal v-model:model-value="isModalOpen">
-      <Login @loginSuccess="closeLogin"></Login>
+    <Modal
+      :blockUI="true"
+      v-model:model-value="isModalOpen"
+      :internalClosing="false"
+    >
+      <Login
+        @loginCanceled="closeLogin"
+        @loginSuccess="closeLogin"
+        classes="login"
+      ></Login>
     </Modal>
     <ImageUploader> </ImageUploader>
   </div>
@@ -23,3 +31,9 @@ function closeLogin() {
   isModalOpen.value = false
 }
 </script>
+
+<style scoped>
+.login {
+  background-color: #292929;
+}
+</style>
