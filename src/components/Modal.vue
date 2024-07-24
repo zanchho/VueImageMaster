@@ -99,7 +99,7 @@ function closeModal() {
   width: calc(100% - calc(var(--modal-border-radius) * 2));
   height: calc(100% - var(--modal-border-radius) * 2);
   border-radius: var(--modal-border-radius);
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
 
   margin: var(--modal-border-radius);

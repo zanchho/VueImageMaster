@@ -13,7 +13,11 @@
         classes="login"
       ></Login>
     </Modal>
-    <ImageUploader> </ImageUploader>
+    <ImageUploader v-model="image" />
+    <div v-if="image">
+      <p>Image Loaded:</p>
+      <img :src="image" />
+    </div>
   </div>
 </template>
 
@@ -23,6 +27,7 @@ import Login from "@/components/Login.vue"
 import ImageUploader from "@/components/ImageUploader.vue"
 
 import { ref } from "vue"
+// modal
 const isModalOpen = ref(false)
 function openLogin() {
   isModalOpen.value = true
@@ -30,6 +35,9 @@ function openLogin() {
 function closeLogin() {
   isModalOpen.value = false
 }
+
+// image uploader
+const image = ref(null)
 </script>
 
 <style scoped>

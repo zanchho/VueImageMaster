@@ -1,14 +1,12 @@
 <template>
   <div class="image-uploader">
     <button @click="triggerFileSelection">Select File</button>
-    <label v-if="fileName.length > 0"> {{ fileName }}</label>
     <input
       type="file"
       ref="fileInput"
       @change="onFileChange"
       accept="image/*"
     />
-    <img v-if="previewImage" :src="previewImage" alt="Selected Image Preview" />
     <p v-if="invalidFileType" class="error-message">
       Please select an image file.
     </p>
@@ -17,7 +15,7 @@
 
 <script setup>
 import { ref } from "vue"
-
+const emits = defineEmits(["update:modelValue"])
 const fileInput = ref(null)
 function triggerFileSelection() {
   fileInput.value.click() // Programmatically click the hidden file input
@@ -49,6 +47,10 @@ function onFileChange(e) {
   const reader = new FileReader()
   reader.onload = function (event) {
     previewImage.value = event.target.result
+    emits("update:modelValue", event.target.result)
+  }
+  reader.onerror = err => {
+    console.error(err)
   }
   reader.readAsDataURL(file)
 }

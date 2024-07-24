@@ -5,7 +5,7 @@
       v-model="value"
       :placeholder="placeholder"
       :class="
-        isPassword(inputType) ? 'input-field  is-password' : 'input-field '
+        isPassword(inputType) ? 'input-field is-password' : 'input-field '
       "
       :required="required"
       :autocomplete="autocomplete"
@@ -64,15 +64,21 @@ function isPassword(value) {
 
 <style scoped>
 .custom-input {
+  position: relative; /* fixes the icon positioning  onscroll*/
   display: inline-block;
-  width: 100%;
+
+  font-size: 100% !important;
+
   --custom-input-border: 2px;
   --custom-input-padding: 10px;
   --custom-input-width: calc(100% - var(--custom-input-border) * 4);
   --calced-input-height: calc(1em + var(--custom-input-padding) * 2);
+  width: 100%;
+  height: var(--calced-input-height + 1px);
 }
 .custom-input .input-field {
   width: var(--custom-input-width);
+  height: max(100%, --calced-input-height);
   padding: var(--custom-input-padding);
   margin: 0 calc(var(--custom-input-border) * 2);
   border: var(--custom-input-border) solid #ccc;
@@ -91,16 +97,18 @@ function isPassword(value) {
     var(--custom-input-width) - var(--calced-input-height) -
       var(--custom-input-border) * 3
   );
+  height: 100%;
   margin-right: 0;
   border-radius: var(--custom-input-padding) 0 0 var(--custom-input-padding);
 }
 .custom-input .input-field + .password-vision-icon {
+  position: absolute;
   display: inline-flex;
   justify-self: center;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  height: var(--calced-input-height);
+
+  height: calc(100% - var(--custom-input-border) * 2);
   width: var(--calced-input-height);
 
   background-color: inherit;
@@ -116,21 +124,14 @@ function isPassword(value) {
 }
 
 .visible-icon {
-  height: 90%;
-  width: 90%;
-  /* */
   background: url("@resource/visible-eye-svgrepo-com.svg");
-  background-size: cover;
 }
 .not-visible-icon {
-  height: 90%;
-  width: 90%;
   background: url("@resource/not-visible-svgrepo-com.svg");
-  background-size: cover;
 }
 .icon {
   height: 90%;
-  width: 90%;
+  aspect-ratio: 1/1;
   background-size: cover;
   transition: background-image 0.3s ease-in-out;
 }

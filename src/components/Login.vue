@@ -1,5 +1,5 @@
 <template>
-  <form :class="updateClasses" @submit.prevent="handleSubmit">
+  <form :class="updateClasses" @submit.prevent="handleLogin">
     <div class="form-group">
       <label for="username">Username:</label>
       <Input
@@ -30,7 +30,7 @@
       <button
         type="button"
         class="btn btn-primary cancel"
-        @click="$emit('loginCanceled')"
+        @click="loginCanceled"
       >
         Cancel
       </button>
@@ -51,7 +51,6 @@ const props = defineProps({
   classes: { type: String, default: "" },
 })
 
-const classForForm = ref("")
 const defaultFormClass = "login-container"
 
 const username = ref("")
@@ -62,7 +61,18 @@ const updateClasses = computed(() => {
   console.log("computed:", defaultFormClass + " " + props.classes)
   return defaultFormClass + " " + props.classes
 })
-
+function resetValues() {
+  username.value = ""
+  password.value = ""
+}
+function loginCanceled() {
+  resetValues()
+  emits("loginCanceled")
+}
+function loginSuccess() {
+  resetValues()
+  emits("loginSuccess")
+}
 function handleLogin() {
   const credentialsJson = JSON.stringify({
     username: username.value,
@@ -79,7 +89,7 @@ function handleLogin() {
 
   vuexStore
     .dispatch("login", encryptedCredentials)
-    .then(() => emits("loginSuccess"))
+    .then(() => loginSuccess())
     .catch(err => {
       //TODO actually error Handling with Message
       emits("loginFailed")
@@ -92,20 +102,26 @@ function handleSubmit() {
 </script>
 
 <style scoped>
+label {
+  margin-left: 0.5em;
+  user-select: none;
+}
 .login-container {
-  width: 100%;
-  /* height: calc(100% * 200); */
+  --login-padding-tb: 20px;
+  --login-padding-rl: 0;
+  margin: 0;
+  width: calc(100% - var(--login-padding-rl));
+  height: calc(100% - var(--login-padding-tb));
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  border-radius: 8px;
+  padding: var(--login-padding-tb) var(--login-padding-rl);
 }
 
 .form-group {
-  width: 90%;
+  width: 95%;
   margin-bottom: 15px;
 }
 
